@@ -11,13 +11,13 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration // 스프링 설정파일
-// @PropertySource("classpath:/hello.properties") // 특정 properties파일을 참조
-public class WebConfig implements WebMvcConfigurer {
+// @PropertySource("classpath:/hello.properties") // @PropertySource - 특정 properties파일을 참조
+public class WebConfig implements WebMvcConfigurer { // 기본적으로 application.properties를 참조한다.
 
     /*
     // @Value("${키}")
-    @Value("${server.port}") // application.properties파일의 키값을 읽어서 받아옴
-            String port;
+    @Value("${server.port}") // @Value - 기본적으로 application.properties파일의 키값을 읽어서 받아옴
+    String port;
 
     @Value("${hello}")
     String hello;
@@ -51,5 +51,4 @@ public class WebConfig implements WebMvcConfigurer {
         System.out.println("properties bye값:" + bye);
     }
     */
-
 }

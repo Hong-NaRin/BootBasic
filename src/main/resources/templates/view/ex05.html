@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h3>인클루드 확인하기1</h3>
+
+    <th:block th:replace="~{/include/layout01 :: part1}"></th:block> <!-- 조각 조각 가져올 때는 fragment사용 -->
+    <th:block th:replace="~{/include/layout01 :: part2}"></th:block>
+
+    <!-- 파일을 통째로 인클루드 -->
+    <th:block th:replace="~{/include/layout02}"></th:block> <!-- 전체 가져오기 -->
+</body>
+</html>

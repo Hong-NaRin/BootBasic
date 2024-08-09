@@ -36,6 +36,11 @@ dependencies {
 //	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:9.0.83'
 //	implementation 'javax.servlet:jstl:1.2'
 
+	implementation 'org.springframework.boot:spring-boot-starter-validation:2.7.18' // 유효성 검사
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0' // 마이바티스
+	implementation 'com.mysql:mysql-connector-j:8.0.33' // mysql 커넥터
+	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16' // 로그 모듈
+
 }
 
 tasks.named('test') {

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <h3>스프링 부트 서버측 유효성 검사</h3>
+
+    <form action="actionForm" method="post">
+
+        이름: <input type="text" name="name" th:value="${vo.name}">
+        <span style="color: red;" th:errors="${vo.name}"></span> <!-- 에러가 난 값에 실패 메세지가 있으면 메세지를 실행 -->
+        <br>
+        급여: <input type="text" name="salary" th:value="${vo.salary}">
+        <span style="color: red;" th:errors="${vo.salary}"></span>
+        <br>
+        전화번호: <input type="text" name="phone" th:value="${vo.phone}">
+        <span style="color: red;" th:errors="${vo.phone}"></span>
+        <br>
+        이메일: <input type="text" name="email" th:value="${vo.email}">
+        <span style="color: red;" th:errors="${vo.email}"></span>
+        <br>
+
+        <input type="submit" value="유효성 검증">
+
+    </form>
+    [[${vo}]]
+</body>
+</html>
