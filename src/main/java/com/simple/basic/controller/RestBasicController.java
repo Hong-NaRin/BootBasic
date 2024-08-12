@@ -14,7 +14,10 @@ import java.util.Map;
 
 // RestController는 modelAttribute의 일반 컨트롤러와 서버가 다름 (일반 컨트롤러는 내 프로젝트에 포함된 파일에다 리턴)
 // 일반 컨트롤러는 RestController처럼 바로 받을 수가 없음 (구글 부메랑)
-// @ResponseBody - 컨트롤러 메서드의 반환 값을 뷰(View)로 해석하지 않고, HTTP 응답 본문에 그대로 출력
+
+/* --- @ResponseBody와 @RestController 차이점 --- */
+// @ResponseBody - 컨트롤러 메서드의 반환 값을 뷰(View)로 해석하지 않고, HTTP 응답 본문에 그대로 출력 (특정 메서드에만 적용하고 싶을 때 사용)
+// @RestController - 클래스 전체(모든 메서드)에 @ResponseBody를 적용하는 역할
 
 @RestController // Controller + ResponseBody 합성어 (컨트롤러에서 응답을 클라이언트 요청이 들어온 곳으로 바꿈)
 public class RestBasicController {
@@ -31,7 +34,7 @@ public class RestBasicController {
 
     /* -----------------------------------------------------------*/
     // get방식 요청받기 - 일반 컨트롤러에서 받는 형식과 똑같은 방법으로 가능함
-    // http://localhost:8181/getData?num=1&name=홍길동  -> num과 name 가져옴
+    // http://localhost:8181/getData?num=1&name=홍길동 -> num과 name 가져옴
 
     // 1st
 //    @GetMapping("/getData")
@@ -81,7 +84,7 @@ public class RestBasicController {
     /* -----------------------------------------------------------*/
     // post 방식 - 소비자(사용자)와 제공자(서버) 이 둘의 데이터를 주고 받는 규약이 정확하게 지켜져야 함
 
-    // form형식으로 데이터 전송 - 소비자 데이터를 Form 형식으로 반드시 만들어서 보내야 함
+    // form형식으로 데이터 전송할 때 - 소비자 데이터를 Form 형식으로 반드시 만들어서 보내야 함
     // http://localhost:8181/getForm
     @PostMapping("/getForm")
     public String getForm(TestVO vo) {
@@ -90,7 +93,7 @@ public class RestBasicController {
     }
 
     /* -----------------------------------------------------------*/
-    // JSON 형식으로 데이터 전송
+    // JSON 형식으로 데이터 전송할 때
     // @RequestBody - 클라이언트에 JSON 데이터를 자바 오브젝트로 변형해서 맵핑
     // @RequestBody 적으면 json 데이터, 없으면 기본 form 데이터
     // json 데이터는 웬만하면 map 타입 말고 vo 타입 -> map은 사용자측에서 잘못된 데이터 넣을 가능성이 있음
@@ -116,7 +119,7 @@ public class RestBasicController {
     // consumer - 반드시 이 타입으로 보내라
     // produces - 서버에서 제공하는 타입으로 보내준다 (내가 이 타입으로 줄게)
     // 기본값은 - "application/json"
-    @PostMapping(value="/getResult", produces = "text/html", consumes = "text/plain") // 내가 html타입으로 주면 반드시 json타입으로 보내라
+    @PostMapping(value="/getResult", produces = "text/html", consumes = "text/plain") // 내가 html타입으로 주면 반드시 plain타입으로 보내라
     public String getResult(@RequestBody String str) {
         System.out.println(str);
         return "<h3>문자열</h3>";
