@@ -6,5 +6,144 @@
 </head>
 <body>
     타임리프로 만들어진 뷰입니다.
+    <button type="button" id="getBtn">get방식</button>
+    <button type="button" id="postBtn">post방식</button>
+    <!--
+    <script>
+        var getBtn = document.getElementById("getBtn");
+        getBtn.addEventListener("click", function() {
+
+            fetch("/getData2/1/홍길동")
+            .then(function(response) {
+                return response.text()
+            })
+            .then(function(data) {
+                console.log(data);
+            })
+        })
+
+        var postBtn = document.getElementById("postBtn");
+        postBtn.addEventListener("click", function() {
+            // post
+            fetch("/getEntity", {
+                method : "post",
+                headers : {
+                    "Content-Type" : "application/json"
+                    // 서로 주고 받으려면 서버에서도 Content-Type을 명시하면 클라이언트에서도 명시해줘야 함
+                    // json을 받으려면 RestController와 같이 Content-Type 써야함
+                    // Content-Type을 쓰지 않으면 text로 받아들여서 RestController에서 @RequestBody를 썼을 때 오류 발생
+                },
+                body : JSON.stringify({num: 1, name: "홍길동"})
+            })
+            .then(function(response) {
+                return response.json(); // response.json()으로 파싱
+            })
+            .then(function(data) {
+                console.log(data);
+            })
+        })
+    </script>
+    -->
+
+    <!-- 위에랑 결과 같음 (fetch나 제이쿼리 둘 중에 하나의 방법으로 적어주면 됨) -->
+    <!-- 제이쿼리 링크 -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script>
+        $("#getBtn").click(function() {
+            $.ajax({
+                type : "get", // 요청 방식
+                url : "/getData2/1/이순신", // 요청 주소
+                success: function(data) {
+                    console.log(data);
+                },
+                error: function(err, status) {
+                    console.log(err);
+                }
+            })
+        })
+
+        $("#postBtn").click(function() {
+            $.ajax({
+                type : "post", // 요청방식
+                url : "/getEntity", // 요청주소
+                data : JSON.stringify({num : 1, name: "hona"}), // 보낼 데이터
+                contentType : "application/json", // 보낼 데이터에 대한 타입
+                dataType : "json", // 서버가 리턴하는 데이터 타입 (생략 가능)
+                success : function(data) {
+                    console.log(data);
+                },
+                error : function(err, status) {
+                    console.log(err);
+                }
+            })
+        })
+    </script>
+
+    <button type="button" id="ex01">ex01</button>
+    <button type="button" id="ex02">ex02</button>
+
+    <!--
+    <script>
+        var ex01 = document.getElementById("ex01");
+        ex01.addEventListener("click", function() {
+
+            fetch("/api/v1/getData?sno=1&name=이순신")
+                .then(function(response) {
+                return response.json() //응답 json
+            })
+                .then(function(data) {
+                console.log(data);
+            })
+        })
+
+        var ex02 = document.getElementById("ex02");
+        ex02.addEventListener("click", function() {
+            fetch("/api/v1/getInfo", {
+                method : "post",
+                headers : {
+                    "Content-Type" : "application/json"
+                },
+                body : JSON.stringify({memo: "홍길동123", phone: "010-1234-1234"})
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                console.log(data);
+            })
+        })
+    </script>
+    -->
+
+    <script>
+        $("#ex01").click(function() {
+            $.ajax({
+                type : "get",
+                url : "/api/v1/getData?sno=1&name=이순신",
+                success : function(data) {
+                    console.log(data);
+                },
+                error: function(err, status) {
+                    console.log(err);
+                }
+            })
+        })
+
+        $("#ex02").click(function() {
+            $.ajax({
+                type: "post",
+                url : "/api/v1/getInfo",
+                data : JSON.stringify({memo: "홍길동123", phone: "010-1234-1234"}),
+                contentType: "application/json",
+                success : function(data) {
+                    console.log(data);
+                },
+                error: function(err, status) {
+                    console.log(err);
+                }
+            })
+        })
+    </script>
 </body>
 </html>

@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 @Data
 public class MemoVO {
 
+    private Long sno;
     @Size(min=5, message = "5글자 이상 내용을 작성해주세요")
     private String memo;
     @Pattern(regexp = "[0-9]{3}-[0-9]{4}-[0-9]{4}", message = "전화번호 형식은 000-0000-0000입니다")

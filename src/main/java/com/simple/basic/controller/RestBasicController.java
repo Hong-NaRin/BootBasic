@@ -1,14 +1,15 @@
 package com.simple.basic.controller;
 
+import com.simple.basic.command.MemoVO;
 import com.simple.basic.command.TestVO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import javax.validation.Valid;
+import java.util.*;
 
 // 구글 부메랑-soap & Rest client 사용
 
@@ -127,23 +128,70 @@ public class RestBasicController {
 
     /* -----------------------------------------------------------*/
     // 응답문서 명확하게 작성하기 ResponseEntity<데이터타입>
+    @CrossOrigin({"http://127.0.0.1:5500", "http://localhost:5500"}) // 데이터 쉐어링 승인
+    // @CrossOrigin("*") // 모든 서버에 대한 요청을 승인함 (위험할 수 있음)
     @PostMapping("/getEntity")
-    public ResponseEntity<TestVO> getEntity() {
+    public ResponseEntity<TestVO> getEntity(@RequestBody TestVO v) { // @RequestBody TestVO v 받아서 <TestVO> 반환
+        System.out.println("받은 데이터:" + v.toString());
         TestVO vo = new TestVO(1, "홍길동", 20, "서울시");
 
         // 1st
-        // ResponseEntity entity = new ResponseEntity(vo, 상태값);
+        // ResponseEntity entity = new ResponseEntity(데이터, 상태값); -> 데이터와 상대값을 둘 다 보내거나
+        // ResponseEntity entity = new ResponseEntity(HttpStatus.BAD_REQUEST); -> 상태값만 보낼 수도 있음
 //        ResponseEntity entity = new ResponseEntity(vo, HttpStatus.BAD_REQUEST); // HttpStatus.ok를 제외하고는 전부 에러임
 //        return entity;
 
         // 2nd
         HttpHeaders header = new HttpHeaders();
         header.add("Autorization", "Bearer JSON WEB TOKEN~"); // 키, 값
-        header.add("Content-Type", "application/json"); // produce와 같은 표현
-        header.add("Access-Control-Allow-Origin", "http://example.com");
+        header.add("Content-Type", "application/json"); // produce와 같은 표현  -> @RequestBody TestVO v로 보내겠다
+        // header.add("Access-Control-Allow-Origin", "http://example.com");
 
-        ResponseEntity entity = new ResponseEntity(vo, header, HttpStatus.OK); // 데이터, 헤더, 상태값
+        ResponseEntity entity = new ResponseEntity(vo, header, HttpStatus.OK); // 데이터, 헤더, 상태값 세개를 보낼 수도 있음
         return entity;
+    }
 
+    /* -----------------------------------------------------------*/
+    /*
+    요청주소 : /api/v1/getData
+    메서드 : get
+    요청 파라미터 : sno(숫자), name(문자)
+    응답 파라미터 : MemoVO
+    헤더에 담을 내용 HttpStatus.OK
+    fetch API 사용해서 클라이언트에 요청 응답
+     */
+
+    @GetMapping("/api/v1/getData")
+    public ResponseEntity<MemoVO> exampleData(@RequestParam("sno") int sno,
+                                              @RequestParam("name") String name) {
+        System.out.println(sno + ", " + name);
+
+        return new ResponseEntity<MemoVO>(
+                new MemoVO(1L, "홍길동", "1234", null, "Y")
+                , HttpStatus.OK);
+    }
+
+    /*
+    요청주소 : /api/v1/getInfo
+    메서드 : post
+    요청 파라미터 : MemoVO 타입
+    응답 파라미터 : List<MemoVO>타입
+    헤더에 담을 내용 HttpStatus.OK
+    fetch API 사용해서 클라이언트에 요청 응답
+    */
+
+    @PostMapping("/api/v1/getInfo")
+    public ResponseEntity<List<MemoVO>> getInfo(@RequestBody @Valid MemoVO vo, // @Valid를 넣어서 유효성 검사도 할 수 있음
+                                                BindingResult binding) { // 실패하면 binding
+
+        if(binding.hasErrors()) {
+            System.out.println("유효성 검증에 실패함");
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        // DB 들어갈 수 있음
+
+        List<MemoVO> list = new ArrayList<>();
+        list.add(vo);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }
